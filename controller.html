@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone Controller</title>
+
+<style>
+body{
+    background:#111;
+    color:white;
+    font-family:Arial;
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+}
+
+input,textarea{
+    width:100%;
+    margin:10px 0;
+    padding:12px;
+    font-size:18px;
+    background:#222;
+    color:white;
+    border:1px solid #555;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    font-size:20px;
+    background:#00b894;
+    color:white;
+    border:none;
+    border-radius:8px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Ferris Wheel Controller</h1>
+
+<input id="artist" placeholder="Artist Name">
+
+<input id="song" placeholder="Song Name">
+
+<input id="engineer" placeholder="Engineer">
+
+<input id="time" placeholder="Session Time">
+
+<textarea id="lyrics" rows="15" placeholder="Paste Lyrics Here"></textarea>
+
+<button onclick="sendData()">
+UPDATE DASHBOARD
+</button>
+<button onclick="scrollUp()">
+⬆ Scroll Up
+</button>
+
+<button onclick="scrollDown()">
+⬇ Scroll Down
+</button>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="controller.js"></script>
+
+</body>
+</html>

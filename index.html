@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ferris Wheel Studios</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo-section">
+
+<h1 id="artistName">ARTIST NAME</h1>
+
+<p id="welcomeText">
+Welcome To Ferris Wheel Studios
+</p>
+
+</div>
+
+<div class="recording-status">
+
+<div class="dot"></div>
+
+<span>RECORDING LIVE</span>
+
+</div>
+
+</header>
+
+<main>
+
+<div class="dashboard">
+
+<!-- LEFT PANEL -->
+
+<div class="session">
+
+<h2>SESSION INFO</h2>
+
+<div class="info">
+
+<p><strong>Song</strong></p>
+
+<p id="songName">-</p>
+
+<br>
+
+<p><strong>Engineer</strong></p>
+
+<p id="engineer">-</p>
+
+<br>
+
+<p><strong>Producer</strong></p>
+
+<p id="producer">Ferris Wheel Studios</p>
+
+<br>
+
+<p><strong>Session Time</strong></p>
+
+<p id="sessionTime">12:00 PM - 02:00 PM</p>
+
+</div>
+
+</div>
+
+<!-- CENTER PANEL -->
+
+<div class="lyrics" id="lyricsContainer">
+
+<h2>LYRICS</h2>
+
+<div id="lyricsText">
+
+Paste Lyrics Here...
+
+</div>
+
+</div>
+
+<!-- RIGHT PANEL -->
+
+<div class="timer">
+
+<h2>SESSION</h2>
+
+<div class="countdown">
+
+<p>Remaining Time</p>
+
+<h1 id="timer">--:--:--</h1>
+
+</div>
+
+<hr>
+
+<div class="clock">
+
+<p>Current Time</p>
+
+<h2 id="clock">--:--:--</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+<footer>
+
+<div class="footer-warning">
+
+⚠ PLEASE KEEP AC OFF DURING RECORDING ⚠
+
+</div>
+
+</footer>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
