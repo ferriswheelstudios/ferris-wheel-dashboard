@@ -33,7 +33,7 @@ socket.on("dashboardData",(data)=>{
 
 socket.on("lyricsScroll",(amount)=>{
 
-    document.getElementById("lyricsContainer").scrollBy({
+    document.getElementById("lyricsContext").scrollBy({
         top:amount,
         behavior:"smooth"
     });
