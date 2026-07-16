@@ -13,28 +13,41 @@ let dashboardData = {
     song: "Song Name",
     engineer: "Engineer",
     sessionTime: "12:00 PM - 02:00 PM",
-    lyrics: "Paste lyrics here..."
+    lyrics: "Paste Lyrics Here..."
 };
 
-io.on("connection", (socket)=>{
+io.on("connection", (socket) => {
 
     console.log("Device Connected");
 
     socket.emit("dashboardData", dashboardData);
 
-    socket.on("updateData",(data)=>{
-        dashboardData = data;
+    socket.on("updateData", (data) => {
+
+        dashboardData = {
+            artist: data.artist || "",
+            song: data.song || "",
+            engineer: data.engineer || "",
+            sessionTime: data.sessionTime || "",
+            lyrics: data.lyrics || ""
+        };
+
         io.emit("dashboardData", dashboardData);
+
     });
 
-    socket.on("lyricsScroll",(amount)=>{
+    socket.on("lyricsScroll", (amount) => {
+
         io.emit("lyricsScroll", amount);
+
     });
 
 });
 
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT,"0.0.0.0",()=>{
-    console.log("Server Running");
+server.listen(PORT, "0.0.0.0", () => {
+
+    console.log("Server Running on Port " + PORT);
+
 });
