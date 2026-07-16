@@ -1,5 +1,7 @@
 const socket = io();
 
+alert("script loaded");
+
 // -----------------------------
 // Dashboard Live Update
 // -----------------------------
