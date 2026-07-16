@@ -10,8 +10,6 @@ function sendData() {
 
         engineer: document.getElementById("engineer").value,
 
-        producer: document.getElementById("producer").value,
-
         sessionTime: document.getElementById("time").value,
 
         lyrics: document.getElementById("lyrics").value

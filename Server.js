@@ -12,7 +12,6 @@ let dashboardData = {
   artist: "Artist Name",
   song: "Song Name",
   engineer: "Engineer",
-  producer: "ferri wheel studios",
   sessionTime: "12:00 PM - 02:00 PM",
   lyrics: "Paste lyrics here..."
 };

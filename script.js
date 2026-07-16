@@ -15,11 +15,6 @@ socket.on("dashboardData", (data) => {
     document.getElementById("engineer").textContent =
         data.engineer || "";
 
-    if(document.getElementById("producer")){
-        document.getElementById("producer").textContent =
-            data.producer || "Ferris Wheel Studios";
-    }
-
     document.getElementById("sessionTime").textContent =
         data.sessionTime || "";
 
