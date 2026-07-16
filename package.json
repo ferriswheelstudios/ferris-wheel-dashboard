@@ -2,18 +2,12 @@
   "name": "ferris-wheel-dashboard",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "Server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node Server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "express": "^5.2.1",
-    "io": "^1.5.8",
-    "socket": "^1.1.132",
     "socket.io": "^4.8.3"
   }
 }
