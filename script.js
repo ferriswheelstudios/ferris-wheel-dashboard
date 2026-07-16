@@ -114,3 +114,11 @@ function updateRemainingTime(){
     document.getElementById("timer").textContent =
         `${String(hrs).padStart(2,"0")}:${String(mins).padStart(2,"0")}:${String(secs).padStart(2,"0")}`;
 }
+// Start Clock & Countdown
+updateClock();
+updateRemainingTime();
+
+setInterval(() => {
+    updateClock();
+    updateRemainingTime();
+}, 1000);
