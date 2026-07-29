@@ -29,3 +29,7 @@ function scrollUp() {
 function scrollDown() {
     socket.emit("lyricsScroll", 150);
 }
+
+function showSessionView() {
+    socket.emit("showSessionView");
+}

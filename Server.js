@@ -1,6 +1,7 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const { exec } = require("child_process");
 
 const app = express();
 const server = http.createServer(app);
@@ -41,8 +42,19 @@ io.on("connection", (socket) => {
         io.emit("lyricsScroll", amount);
 
     });
+    socket.on("showSessionView", () => {
+    exec(
+        `osascript -e 'tell application "Ableton Live 12 Suite" to activate'`,
+        (err) => {
+            if (err) {
+                console.error(err);
+            }
+        }
+    );
+});
 
 });
+
 
 const PORT = process.env.PORT || 3000;
 
