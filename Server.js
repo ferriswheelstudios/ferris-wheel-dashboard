@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
 
     });
     socket.on("showSessionView", () => {
+        console.log("SHOW SESSION VIEW BUTTON PRESSED");
     exec(
         `osascript -e 'tell application "Ableton Live 12 Suite" to activate'`,
         (err) => {
