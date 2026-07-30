@@ -64,6 +64,16 @@ io.on("connection", (socket) => {
 
     });
 
+    socket.on("showDashboard", () => {
+
+        console.log("SHOW DASHBOARD BUTTON PRESSED");
+
+        macClients.forEach((client) => {
+            client.emit("showDashboard");
+        });
+
+    });
+
 });
 
 const PORT = process.env.PORT || 3000;

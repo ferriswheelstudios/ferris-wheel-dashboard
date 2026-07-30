@@ -33,3 +33,7 @@ function scrollDown() {
 function showSessionView() {
     socket.emit("showSessionView");
 }
+
+function showDashboard() {
+    socket.emit("showDashboard");
+}
