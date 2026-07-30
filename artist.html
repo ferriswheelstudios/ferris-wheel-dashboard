@@ -3,48 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Artist Scroll Controller</title>
+<title>Artist Controller</title>
 
 <style>
-body{
+
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+-webkit-tap-highlight-color: transparent;
+}
+
+body{
 background:#111;
+height:100vh;
 display:flex;
 flex-direction:column;
-height:100vh;
-font-family:Arial;
+overflow:hidden;
 }
 
 button{
-flex:1;
-font-size:60px;
-font-weight:bold;
 border:none;
+font-size:42px;
+font-weight:bold;
 color:white;
+cursor:pointer;
+transition:all .12s ease;
+box-shadow:0 10px 20px rgba(0,0,0,.35);
+}
+
+button:active{
+transform:scale(.96);
+filter:brightness(.75);
+box-shadow:0 2px 8px rgba(0,0,0,.6);
 }
 
 #up{
+flex:3;
 background:#00b894;
 }
 
 #down{
+flex:3;
 background:#d63031;
 }
+
+.bottom{
+flex:2;
+display:flex;
+}
+
+#session{
+flex:1;
+background:#6c5ce7;
+}
+
+#dashboard{
+flex:1;
+background:#0984e3;
+}
+
+@media (max-width:600px){
+
+button{
+font-size:30px;
+}
+
+}
+
 </style>
 
 </head>
 
 <body>
 
-<button id="up" onclick="scrollUp()">⬆ SCROLL UP</button>
+<button id="up" onclick="scrollUp()">
+⬆<br>
+SCROLL UP
+</button>
 
-<button id="down" onclick="scrollDown()">⬇ SCROLL DOWN</button>
+<button id="down" onclick="scrollDown()">
+⬇<br>
+SCROLL DOWN
+</button>
 
-<button id="session" onclick="showSessionView()">🎵 SHOW SESSION VIEW</button>
+<div class="bottom">
 
-<button onclick="showDashboard()">📺 SHOW DASHBOARD</button>
+<button id="session" onclick="showSessionView()">
+🎵<br>
+SESSION
+</button>
+
+<button id="dashboard" onclick="showDashboard()">
+📺<br>
+DASHBOARD
+</button>
+
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
+
 <script src="controller.js"></script>
 
 </body>
