@@ -159,7 +159,7 @@ onclick="press(event);openRefreshment()">
 
 <button onclick="sendRefreshment('Green Tea')">🌿 Green Tea</button><br><br>
 
-<button onclick="closeRefreshment()">Cancel</button>
+<button onclick="closeRefreshment()">❌Cancel</button>
 
 </div>
 
@@ -173,6 +173,7 @@ document.getElementById("refreshmentOverlay").style.display="none";
 }
 
 function sendRefreshment(type){
+    console.log("sending:",type);
 closeRefreshment();
 requestRefreshment(type);
 }</script>

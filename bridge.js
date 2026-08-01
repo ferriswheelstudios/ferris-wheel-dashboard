@@ -38,6 +38,8 @@ socket.on("showDashboard", () => {
 // Refreshment Notification
 socket.on("refreshmentRequest", async (data) => {
 
+    console.log
+
     try {
 
         await fetch("https://ntfy.sh/ferris-wheel-studios", {
