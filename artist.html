@@ -1,1 +1,177 @@
-<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'><title>Ferris Wheel Studios • Artist Controller</title><style>*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:Arial,Helvetica,sans-serif}html,body{height:100%;overflow:hidden}body{background:radial-gradient(circle at top,#3d2a64 0,#1a1a2e 35%,#090909 100%);display:flex;flex-direction:column;color:#fff}.header{padding:14px;text-align:center;background:rgba(255,255,255,.05);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08)}.logo{font-size:28px;font-weight:900}.sub{font-size:13px;color:#bbb}.main{flex:1;display:flex;flex-direction:column;gap:14px;padding:14px}button{border:none;color:#fff;border-radius:24px;transition:.1s;box-shadow:0 16px 40px rgba(0,0,0,.45)}button:active{transform:scale(.96);filter:brightness(.8)}#up,#down{flex:1;font-size:44px;font-weight:900}#up{background:linear-gradient(135deg,#00d084,#00a86b)}#down{background:linear-gradient(135deg,#ff4d4d,#c62828)}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px}.small{height:120px;font-size:26px;font-weight:900}#session{background:linear-gradient(135deg,#8e44ff,#5b2cff)}#dashboard{background:linear-gradient(135deg,#00b4ff,#006dff)}.footer{padding:8px;text-align:center;color:#888;font-size:11px}.ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.35);animation:ripple .5s linear}@keyframes ripple{to{transform:scale(8);opacity:0}}</style></head><body><div class='header'><div class='logo'>🎡 FERRIS WHEEL STUDIOS</div><div class='sub'>Artist Controller</div></div><div class='main'><button id='up' onclick='press(event);scrollUp()'>⬆<br>SCROLL UP</button><button id='down' onclick='press(event);scrollDown()'>⬇<br>SCROLL DOWN</button><div class='bottom'><button id='session' class='small' onclick='press(event);showSessionView()'>🎵<br>SESSION</button><button id='dashboard' class='small' onclick='press(event);showDashboard()'>📺<br>DASHBOARD</button></div></div><div class='footer'>Ferris Wheel Studios</div><script>function press(e){if(navigator.vibrate){navigator.vibrate(18);}const b=e.currentTarget;const r=document.createElement('span');r.className='ripple';const rect=b.getBoundingClientRect();const s=Math.max(rect.width,rect.height);r.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-rect.left-s/2)+'px;top:'+(e.clientY-rect.top-s/2)+'px;position:absolute';b.style.position='relative';b.appendChild(r);setTimeout(()=>r.remove(),500);}</script><script src='/socket.io/socket.io.js'></script><script src='controller.js'></script></body></html>
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width,initial-scale=1.0'>
+    <title>Ferris Wheel Studios • Artist Controller</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden
+        }
+
+        body {
+            background: radial-gradient(circle at top, #3d2a64 0, #1a1a2e 35%, #090909 100%);
+            display: flex;
+            flex-direction: column;
+            color: #fff
+        }
+
+        .header {
+            padding: 14px;
+            text-align: center;
+            background: rgba(255, 255, 255, .05);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900
+        }
+
+        .sub {
+            font-size: 13px;
+            color: #bbb
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 14px
+        }
+
+        button {
+            border: none;
+            color: #fff;
+            border-radius: 24px;
+            transition: .1s;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, .45)
+        }
+
+        button:active {
+            transform: scale(.96);
+            filter: brightness(.8)
+        }
+
+        #up,
+        #down {
+            flex: 1;
+            font-size: 44px;
+            font-weight: 900
+        }
+
+        #up {
+            background: linear-gradient(135deg, #00d084, #00a86b)
+        }
+
+        #down {
+            background: linear-gradient(135deg, #ff4d4d, #c62828)
+        }
+
+        .bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .small {
+            height: 120px;
+            font-size: 26px;
+            font-weight: 900
+        }
+
+        #session {
+            background: linear-gradient(135deg, #8e44ff, #5b2cff)
+        }
+
+        #dashboard {
+            background: linear-gradient(135deg, #00b4ff, #006dff)
+        }
+
+        .footer {
+            padding: 8px;
+            text-align: center;
+            color: #888;
+            font-size: 11px
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            background: rgba(255, 255, 255, .35);
+            animation: ripple .5s linear
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(8);
+                opacity: 0
+            }
+        }
+    </style>
+</head>
+function openRefreshment() {
+    document.getElementById("refreshmentOverlay").style.display = "flex";
+    if (navigator.vibrate) navigator.vibrate(20);
+}
+
+function closeRefreshment() {
+    document.getElementById("refreshmentOverlay").style.display = "none";
+}
+
+function sendRefreshment(type) {
+    closeRefreshment();
+    requestRefreshment(type);
+}
+
+<body>
+    <div class='header'>
+        <div class='logo'>🎡 FERRIS WHEEL STUDIOS</div>
+        <div class='sub'>Artist Controller</div>
+    </div>
+    <div class='main'><button id='up' onclick='press(event);scrollUp()'>⬆<br>SCROLL UP</button><button id='down'
+            onclick='press(event);scrollDown()'>⬇<br>SCROLL DOWN</button>
+        <div class='bottom'><button id='session' class='small'
+                onclick='press(event);showSessionView()'>🎵<br>SESSION</button><button id='dashboard' class='small'
+                onclick='press(event);showDashboard()'>📺<br>DASHBOARD</button><button onclick="openRefreshment()">
+    ☕ Refreshment
+</button></div>
+    </div>
+    <div class='footer'>Ferris Wheel Studios</div>
+    <script>function press(e) { if (navigator.vibrate) { navigator.vibrate(18); } const b = e.currentTarget; const r = document.createElement('span'); r.className = 'ripple'; const rect = b.getBoundingClientRect(); const s = Math.max(rect.width, rect.height); r.style.cssText = 'width:' + s + 'px;height:' + s + 'px;left:' + (e.clientX - rect.left - s / 2) + 'px;top:' + (e.clientY - rect.top - s / 2) + 'px;position:absolute'; b.style.position = 'relative'; b.appendChild(r); setTimeout(() => r.remove(), 500); }</script>
+    <script src='/socket.io/socket.io.js'></script>
+    <script src='controller.js'></script>
+    <div id="refreshmentOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);justify-content:center;align-items:center;">
+
+<div style="background:#222;padding:20px;border-radius:12px;text-align:center;">
+
+<h3>Select Refreshment</h3>
+
+<button onclick="sendRefreshment('Coffee')">☕ Coffee</button><br><br>
+
+<button onclick="sendRefreshment('Tea')">🍵 Tea</button><br><br>
+
+<button onclick="sendRefreshment('Green Tea')">🌿 Green Tea</button><br><br>
+
+<button onclick="closeRefreshment()">Cancel</button>
+
+</div>
+
+</div>
+</body>
+
+</html>
