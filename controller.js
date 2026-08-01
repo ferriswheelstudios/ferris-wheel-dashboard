@@ -37,3 +37,17 @@ function showSessionView() {
 function showDashboard() {
     socket.emit("showDashboard");
 }
+
+// -------------------------
+// Refreshment Request
+// -------------------------
+function requestRefreshment(type) {
+
+    const artist = document.getElementById("artist").value;
+
+    socket.emit("refreshmentRequest", {
+        artist: artist,
+        type: type
+    });
+
+}

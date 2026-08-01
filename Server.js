@@ -26,11 +26,9 @@ io.on("connection", (socket) => {
 
     socket.on("registerMac", () => {
         macClients.add(socket);
-        console.log("Mac Connected");
 
         socket.on("disconnect", () => {
             macClients.delete(socket);
-            console.log("Mac Disconnected");
         });
     });
 
@@ -49,29 +47,26 @@ io.on("connection", (socket) => {
     });
 
     socket.on("lyricsScroll", (amount) => {
-
         io.emit("lyricsScroll", amount);
-
     });
 
     socket.on("showSessionView", () => {
-
-        console.log("SHOW SESSION VIEW BUTTON PRESSED");
-
         macClients.forEach((client) => {
             client.emit("showSessionView");
         });
-
     });
 
     socket.on("showDashboard", () => {
-
-        console.log("SHOW DASHBOARD BUTTON PRESSED");
-
         macClients.forEach((client) => {
             client.emit("showDashboard");
         });
+    });
 
+    // NEW
+    socket.on("refreshmentRequest", (data) => {
+        macClients.forEach((client) => {
+            client.emit("refreshmentRequest", data);
+        });
     });
 
 });
@@ -79,7 +74,5 @@ io.on("connection", (socket) => {
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, "0.0.0.0", () => {
-
     console.log("Server Running on Port " + PORT);
-
 });

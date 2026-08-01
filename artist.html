@@ -1,1 +1,343 @@
-<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'><title>Ferris Wheel Studios • Artist Controller</title><style>*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:Arial,Helvetica,sans-serif}html,body{height:100%;overflow:hidden}body{background:radial-gradient(circle at top,#3d2a64 0,#1a1a2e 35%,#090909 100%);display:flex;flex-direction:column;color:#fff}.header{padding:14px;text-align:center;background:rgba(255,255,255,.05);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08)}.logo{font-size:28px;font-weight:900}.sub{font-size:13px;color:#bbb}.main{flex:1;display:flex;flex-direction:column;gap:14px;padding:14px}button{border:none;color:#fff;border-radius:24px;transition:.1s;box-shadow:0 16px 40px rgba(0,0,0,.45)}button:active{transform:scale(.96);filter:brightness(.8)}#up,#down{flex:1;font-size:44px;font-weight:900}#up{background:linear-gradient(135deg,#00d084,#00a86b)}#down{background:linear-gradient(135deg,#ff4d4d,#c62828)}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px}.small{height:120px;font-size:26px;font-weight:900}#session{background:linear-gradient(135deg,#8e44ff,#5b2cff)}#dashboard{background:linear-gradient(135deg,#00b4ff,#006dff)}.footer{padding:8px;text-align:center;color:#888;font-size:11px}.ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.35);animation:ripple .5s linear}@keyframes ripple{to{transform:scale(8);opacity:0}}</style></head><body><div class='header'><div class='logo'>🎡 FERRIS WHEEL STUDIOS</div><div class='sub'>Artist Controller</div></div><div class='main'><button id='up' onclick='press(event);scrollUp()'>⬆<br>SCROLL UP</button><button id='down' onclick='press(event);scrollDown()'>⬇<br>SCROLL DOWN</button><div class='bottom'><button id='session' class='small' onclick='press(event);showSessionView()'>🎵<br>SESSION</button><button id='dashboard' class='small' onclick='press(event);showDashboard()'>📺<br>DASHBOARD</button></div></div><div class='footer'>Ferris Wheel Studios</div><script>function press(e){if(navigator.vibrate){navigator.vibrate(18);}const b=e.currentTarget;const r=document.createElement('span');r.className='ripple';const rect=b.getBoundingClientRect();const s=Math.max(rect.width,rect.height);r.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-rect.left-s/2)+'px;top:'+(e.clientY-rect.top-s/2)+'px;position:absolute';b.style.position='relative';b.appendChild(r);setTimeout(()=>r.remove(),500);}</script><script src='/socket.io/socket.io.js'></script><script src='controller.js'></script></body></html>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <title>Ferris Wheel Studios - Artist Controller</title> <script src="controller.js"></script> <style> * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+
+html, body {
+height: 100%;
+width: 100%;
+overflow-x: hidden;
+}
+
+body {
+font-family: 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+background: radial-gradient(circle at 20% 0%, 
+#1a1035 0%, 
+#0a0612 45%, 
+#050308 100%);
+color: 
+#f0eefc;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+padding: 18px 16px 30px;
+position: relative;
+}
+
+body::before {
+content: "";
+position: fixed;
+inset: 0;
+background:
+radial-gradient(circle at 15% 10%, rgba(0,255,200,0.06), transparent 40%),
+radial-gradient(circle at 85% 20%, rgba(255,0,180,0.06), transparent 40%),
+radial-gradient(circle at 50% 90%, rgba(120,60,255,0.08), transparent 50%);
+pointer-events: none;
+z-index: 0;
+}
+
+header {
+text-align: center;
+padding: 18px 10px 22px;
+position: relative;
+z-index: 1;
+}
+
+header .logo-line {
+font-size: 1.6rem;
+font-weight: 800;
+letter-spacing: 0.5px;
+background: linear-gradient(90deg, 
+#ff8a3d, 
+#ffd23f, 
+#ff8a3d);
+background-size: 200% auto;
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+animation: shimmer 4s linear infinite;
+text-shadow: 0 0 30px rgba(255,138,61,0.25);
+}
+
+header .subtitle {
+margin-top: 6px;
+font-size: 0.82rem;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: 
+#9d95c9;
+font-weight: 600;
+}
+
+@keyframes shimmer {
+0% { background-position: 0% center; }
+100% { background-position: 200% center; }
+}
+
+main {
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 16px;
+max-width: 480px;
+width: 100%;
+margin: 0 auto;
+position: relative;
+z-index: 1;
+}
+
+.row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 14px;
+}
+
+.row.single {
+grid-template-columns: 1fr;
+}
+
+.btn {
+position: relative;
+overflow: hidden;
+border: none;
+border-radius: 22px;
+padding: 26px 10px;
+font-size: 1.05rem;
+font-weight: 800;
+letter-spacing: 0.5px;
+color: 
+#ffffff;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 6px;
+backdrop-filter: blur(18px);
+-webkit-backdrop-filter: blur(18px);
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.12);
+transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.25s ease;
+will-change: transform;
+touch-action: manipulation;
+}
+
+.btn .icon {
+font-size: 1.7rem;
+filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
+}
+
+.btn:active {
+transform: scale(0.94);
+filter: brightness(1.25);
+}
+
+.btn.large {
+padding: 34px 10px;
+font-size: 1.15rem;
+}
+
+.btn.green {
+background: linear-gradient(145deg, rgba(0,255,140,0.22), rgba(0,120,70,0.25));
+box-shadow: 0 0 18px rgba(0,255,150,0.35), 0 0 45px rgba(0,255,150,0.12), inset 0 0 20px rgba(0,255,150,0.06);
+border-color: rgba(0,255,150,0.4);
+}
+.btn.green:active {
+box-shadow: 0 0 30px rgba(0,255,150,0.65), 0 0 70px rgba(0,255,150,0.3);
+}
+
+.btn.red {
+background: linear-gradient(145deg, rgba(255,60,80,0.22), rgba(140,10,30,0.25));
+box-shadow: 0 0 18px rgba(255,60,80,0.35), 0 0 45px rgba(255,60,80,0.12), inset 0 0 20px rgba(255,60,80,0.06);
+border-color: rgba(255,60,80,0.4);
+}
+.btn.red:active {
+box-shadow: 0 0 30px rgba(255,60,80,0.65), 0 0 70px rgba(255,60,80,0.3);
+}
+
+.btn.purple {
+background: linear-gradient(145deg, rgba(170,80,255,0.22), rgba(90,20,160,0.25));
+box-shadow: 0 0 18px rgba(170,80,255,0.35), 0 0 45px rgba(170,80,255,0.12), inset 0 0 20px rgba(170,80,255,0.06);
+border-color: rgba(170,80,255,0.4);
+}
+.btn.purple:active {
+box-shadow: 0 0 30px rgba(170,80,255,0.65), 0 0 70px rgba(170,80,255,0.3);
+}
+
+.btn.blue {
+background: linear-gradient(145deg, rgba(60,150,255,0.22), rgba(10,70,160,0.25));
+box-shadow: 0 0 18px rgba(60,150,255,0.35), 0 0 45px rgba(60,150,255,0.12), inset 0 0 20px rgba(60,150,255,0.06);
+border-color: rgba(60,150,255,0.4);
+}
+.btn.blue:active {
+box-shadow: 0 0 30px rgba(60,150,255,0.65), 0 0 70px rgba(60,150,255,0.3);
+}
+
+.btn.orange {
+background: linear-gradient(145deg, rgba(255,150,40,0.25), rgba(180,70,0,0.28));
+box-shadow: 0 0 18px rgba(255,150,40,0.4), 0 0 45px rgba(255,150,40,0.15), inset 0 0 20px rgba(255,150,40,0.08);
+border-color: rgba(255,150,40,0.45);
+}
+.btn.orange:active {
+box-shadow: 0 0 30px rgba(255,150,40,0.7), 0 0 70px rgba(255,150,40,0.35);
+}
+
+.ripple {
+position: absolute;
+border-radius: 50%;
+background: rgba(255,255,255,0.55);
+transform: scale(0);
+animation: rippleAnim 0.6s ease-out;
+pointer-events: none;
+}
+
+@keyframes rippleAnim {
+to {
+transform: scale(3.2);
+opacity: 0;
+}
+}
+
+footer {
+text-align: center;
+padding-top: 26px;
+font-size: 0.75rem;
+letter-spacing: 2px;
+color: 
+#6f6690;
+text-transform: uppercase;
+position: relative;
+z-index: 1;
+}
+
+.overlay {
+position: fixed;
+inset: 0;
+background: rgba(5,3,10,0.72);
+backdrop-filter: blur(6px);
+-webkit-backdrop-filter: blur(6px);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 50;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s ease;
+}
+
+.overlay.show {
+opacity: 1;
+pointer-events: all;
+}
+
+.popup {
+width: 88%;
+max-width: 380px;
+background: rgba(30,20,50,0.55);
+border: 1px solid rgba(255,255,255,0.15);
+border-radius: 26px;
+padding: 28px 22px;
+backdrop-filter: blur(24px);
+-webkit-backdrop-filter: blur(24px);
+box-shadow: 0 0 40px rgba(150,90,255,0.25), 0 20px 60px rgba(0,0,0,0.5);
+transform: scale(0.85) translateY(20px);
+transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.overlay.show .popup {
+transform: scale(1) translateY(0);
+}
+
+.popup h2 {
+text-align: center;
+font-size: 1.2rem;
+margin-bottom: 20px;
+letter-spacing: 1px;
+background: linear-gradient(90deg, 
+#ffb347, 
+#ffd23f);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+}
+
+.popup-options {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.opt-btn {
+border: none;
+border-radius: 16px;
+padding: 16px;
+font-size: 1rem;
+font-weight: 700;
+color: #fff;
+background: rgba(255,255,255,0.06);
+border: 1px solid rgba(255,255,255,0.12);
+backdrop-filter: blur(10px);
+position: relative;
+overflow: hidden;
+cursor: pointer;
+transition: transform 0.15s ease, filter 0.2s ease;
+}
+
+.opt-btn:active {
+transform: scale(0.95);
+filter: brightness(1.3);
+}
+
+.opt-btn.coffee {
+background: linear-gradient(145deg, rgba(160,100,40,0.35), rgba(90,50,10,0.35));
+box-shadow: 0 0 14px rgba(200,140,60,0.3);
+}
+
+.opt-btn.tea {
+background: linear-gradient(145deg, rgba(255,180,60,0.3), rgba(160,90,10,0.3));
+box-shadow: 0 0 14px rgba(255,180,60,0.3);
+}
+
+.opt-btn.greentea {
+background: linear-gradient(145deg, rgba(60,200,120,0.3), rgba(10,110,60,0.3));
+box-shadow: 0 0 14px rgba(60,200,120,0.3);
+}
+
+.opt-btn.cancel {
+background: linear-gradient(145deg, rgba(255,70,70,0.25), rgba(120,10,10,0.25));
+box-shadow: 0 0 14px rgba(255,70,70,0.25);
+margin-top: 6px;
+}
+
+.toast {
+position: fixed;
+left: 50%;
+bottom: 40px;
+transform: translateX(-50%) translateY(20px);
+background: rgba(20,15,35,0.85);
+border: 1px solid rgba(0,255,170,0.4);
+color: 
+#eafff5;
+padding: 14px 24px;
+border-radius: 40px;
+font-weight: 700;
+font-size: 0.95rem;
+letter-spacing: 0.5px;
+box-shadow: 0 0 25px rgba(0,255,170,0.35), 0 10px 30px rgba(0,0,0,0.4);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.35s ease, transform 0.35s ease;
+z-index: 100;
+}
+
+.toast.show {
+opacity: 1;
+transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 340px) {
+.btn { font-size: 0.92rem; padding: 20px 8px; }
+.btn.large { padding: 26px 8px; font-size: 1rem; }
+}
+</style>
+
+</head> <body> <header> <div class="logo-line">🎡 Ferris Wheel Studios</div> <div class="subtitle">Artist Controller</div> </header> <main> <div class="row single"> <button class="btn large green" data-action="scrollUp"> <span class="icon">⬆</span> <span>SCROLL UP</span> </button> </div> <div class="row single"> <button class="btn large red" data-action="scrollDown"> <span class="icon">⬇</span> <span>SCROLL DOWN</span> </button> </div> <div class="row"> <button class="btn purple" data-action="showSessionView"> <span class="icon">🎵</span> <span>SESSION</span> </button> <button class="btn blue" data-action="showDashboard"> <span class="icon">📺</span> <span>DASHBOARD</span> </button> </div> <div class="row single"> <button class="btn large orange" id="refreshmentBtn"> <span class="icon">☕</span> <span>REFRESHMENT</span> </button> </div> </main> <footer>Ferris Wheel Studios</footer> <div class="overlay" id="refreshmentOverlay"> <div class="popup"> <h2>Select Refreshment</h2> <div class="popup-options"> <button class="opt-btn coffee" id="optCoffee">☕ Coffee</button> <button class="opt-btn tea" id="optTea">🍵 Tea</button> <button class="opt-btn greentea" id="optGreenTea">🌿 Green Tea</button> <button class="opt-btn cancel" id="optCancel">❌ Cancel</button> </div> </div> </div> <div class="toast" id="toast">✅ Request Sent</div> <script> (function() { function vibrate(ms) { if (navigator.vibrate) { navigator.vibrate(ms); } } function createRipple(e, el) { var rect = el.getBoundingClientRect(); var ripple = document.createElement('span'); var size = Math.max(rect.width, rect.height); var x, y; if (e.touches && e.touches[0]) { x = e.touches[0].clientX - rect.left; y = e.touches[0].clientY - rect.top; } else { x = (e.clientX || rect.width / 2) - rect.left; y = (e.clientY || rect.height / 2) - rect.top; } ripple.className = 'ripple'; ripple.style.width = ripple.style.height = size + 'px'; ripple.style.left = (x - size / 2) + 'px'; ripple.style.top = (y - size / 2) + 'px'; el.appendChild(ripple); setTimeout(function() { ripple.remove(); }, 600); } function bindRipple(el) { el.addEventListener('click', function(e) { createRipple(e, el); vibrate(35); }); } var actionButtons = document.querySelectorAll('.btn[data-action]'); actionButtons.forEach(function(btn) { bindRipple(btn); btn.addEventListener('click', function() { var action = btn.getAttribute('data-action'); if (action === 'scrollUp') { scrollUp(); } else if (action === 'scrollDown') { scrollDown(); } else if (action === 'showSessionView') { showSessionView(); } else if (action === 'showDashboard') { showDashboard(); } }); }); var overlay = document.getElementById('refreshmentOverlay'); var refreshmentBtn = document.getElementById('refreshmentBtn'); var optCoffee = document.getElementById('optCoffee'); var optTea = document.getElementById('optTea'); var optGreenTea = document.getElementById('optGreenTea'); var optCancel = document.getElementById('optCancel'); var toast = document.getElementById('toast'); var toastTimer = null; bindRipple(refreshmentBtn); bindRipple(optCoffee); bindRipple(optTea); bindRipple(optGreenTea); bindRipple(optCancel); function openOverlay() { overlay.classList.add('show'); } function closeOverlay() { overlay.classList.remove('show'); } function showToast() { if (toastTimer) { clearTimeout(toastTimer); } toast.classList.add('show'); toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2000); } refreshmentBtn.addEventListener('click', function() { openOverlay(); }); optCoffee.addEventListener('click', function() { closeOverlay(); requestRefreshment("☕ Coffee"); showToast(); }); optTea.addEventListener('click', function() { closeOverlay(); requestRefreshment("🍵 Tea"); showToast(); }); optGreenTea.addEventListener('click', function() { closeOverlay(); requestRefreshment("🌿 Green Tea"); showToast(); }); optCancel.addEventListener('click', function() { closeOverlay(); }); overlay.addEventListener('click', function(e) { if (e.target === overlay) { closeOverlay(); } }); })(); </script> </body> </html>
