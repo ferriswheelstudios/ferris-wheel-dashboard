@@ -81,11 +81,19 @@
             background: linear-gradient(135deg, #ff4d4d, #c62828)
         }
 
-        .bottom {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px
-        }
+        .bottom{
+display:grid;
+grid-template-columns:1fr 1fr;
+grid-template-rows:120px 120px;
+gap:14px;
+}
+
+#refreshment{
+grid-column:1/3;
+background:linear-gradient(135deg,#ff9800,#ff6f00);
+font-size:26px;
+font-weight:900;
+}
 
         .small {
             height: 120px;
@@ -124,19 +132,6 @@
         }
     </style>
 </head>
-function openRefreshment() {
-    document.getElementById("refreshmentOverlay").style.display = "flex";
-    if (navigator.vibrate) navigator.vibrate(20);
-}
-
-function closeRefreshment() {
-    document.getElementById("refreshmentOverlay").style.display = "none";
-}
-
-function sendRefreshment(type) {
-    closeRefreshment();
-    requestRefreshment(type);
-}
 
 <body>
     <div class='header'>
@@ -147,19 +142,16 @@ function sendRefreshment(type) {
             onclick='press(event);scrollDown()'>⬇<br>SCROLL DOWN</button>
         <div class='bottom'><button id='session' class='small'
                 onclick='press(event);showSessionView()'>🎵<br>SESSION</button><button id='dashboard' class='small'
-                onclick='press(event);showDashboard()'>📺<br>DASHBOARD</button><button onclick="openRefreshment()">
-    ☕ Refreshment
+                onclick='press(event);showDashboard()'>📺<br>DASHBOARD</button><button id="refreshment"
+onclick="press(event);openRefreshment()">
+☕<br>REFRESHMENT
 </button></div>
     </div>
-    <div class='footer'>Ferris Wheel Studios</div>
-    <script>function press(e) { if (navigator.vibrate) { navigator.vibrate(18); } const b = e.currentTarget; const r = document.createElement('span'); r.className = 'ripple'; const rect = b.getBoundingClientRect(); const s = Math.max(rect.width, rect.height); r.style.cssText = 'width:' + s + 'px;height:' + s + 'px;left:' + (e.clientX - rect.left - s / 2) + 'px;top:' + (e.clientY - rect.top - s / 2) + 'px;position:absolute'; b.style.position = 'relative'; b.appendChild(r); setTimeout(() => r.remove(), 500); }</script>
-    <script src='/socket.io/socket.io.js'></script>
-    <script src='controller.js'></script>
-    <div id="refreshmentOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);justify-content:center;align-items:center;">
+    <div class='footer'>Ferris Wheel Studios</div><div id="refreshmentOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);justify-content:center;align-items:center;z-index:999">
 
-<div style="background:#222;padding:20px;border-radius:12px;text-align:center;">
+<div style="background:#222;padding:20px;border-radius:15px;text-align:center">
 
-<h3>Select Refreshment</h3>
+<h3>Select Refreshment</h3><br>
 
 <button onclick="sendRefreshment('Coffee')">☕ Coffee</button><br><br>
 
@@ -172,6 +164,20 @@ function sendRefreshment(type) {
 </div>
 
 </div>
+    <script>function press(e) { if (navigator.vibrate) { navigator.vibrate(18); } const b = e.currentTarget; const r = document.createElement('span'); r.className = 'ripple'; const rect = b.getBoundingClientRect(); const s = Math.max(rect.width, rect.height); r.style.cssText = 'width:' + s + 'px;height:' + s + 'px;left:' + (e.clientX - rect.left - s / 2) + 'px;top:' + (e.clientY - rect.top - s / 2) + 'px;position:absolute'; b.style.position = 'relative'; b.appendChild(r); setTimeout(() => r.remove(), 500); }function openRefreshment(){
+document.getElementById("refreshmentOverlay").style.display="flex";
+}
+
+function closeRefreshment(){
+document.getElementById("refreshmentOverlay").style.display="none";
+}
+
+function sendRefreshment(type){
+closeRefreshment();
+requestRefreshment(type);
+}</script>
+    <script src='/socket.io/socket.io.js'></script>
+    <script src='controller.js'></script>
 </body>
 
 </html>
