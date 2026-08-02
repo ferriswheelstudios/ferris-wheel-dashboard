@@ -1,5 +1,12 @@
 const socket = io();
 
+// Keep track of the current artist name from the dashboard,
+// used as a fallback on pages (like artist.html) that have no #artist input.
+let currentArtist = "";
+socket.on("dashboardData", (data) => {
+    currentArtist = data.artist || currentArtist;
+});
+
 function sendData() {
 
     const data = {
@@ -43,7 +50,8 @@ function showDashboard() {
 // -------------------------
 function requestRefreshment(type) {
 
-    const artist = document.getElementById("artist").value;
+    const artistInput = document.getElementById("artist");
+    const artist = artistInput ? artistInput.value : currentArtist;
 
     console.log("Sending Refreshment:", artist, type);
 
