@@ -35,6 +35,8 @@ io.on("connection", (socket) => {
 
     socket.on("updateData", (data) => {
 
+        console.log("updateData received from controller:", data);
+
         dashboardData = {
             artist: data.artist || "",
             song: data.song || "",
@@ -64,9 +66,19 @@ io.on("connection", (socket) => {
                 }
             },
             (res) => {
-                res.on("data", () => {});
+                let body = "";
+                res.on("data", (chunk) => { body += chunk; });
                 res.on("end", () => {
-                    console.log("Google Sheet Updated");
+                    console.log("Google Sheet response status:", res.statusCode);
+                    console.log("Google Sheet response body:", body);
+                    if (res.statusCode >= 300 && res.statusCode < 400) {
+                        console.log("Redirected to:", res.headers.location);
+                        console.log("=> Ye redirect batata hai ki request Apps Script tak process ke liye theek se nahi pahunchi. Deployment access 'Anyone' set karke redeploy karein.");
+                    } else if (res.statusCode >= 200 && res.statusCode < 300) {
+                        console.log("=> Request successfully Apps Script tak pahunch gayi.");
+                    } else {
+                        console.log("=> Google ne error diya, upar body check karein.");
+                    }
                 });
             }
         );
@@ -97,6 +109,10 @@ io.on("connection", (socket) => {
     });
 
     socket.on("refreshmentRequest", (data) => {
+        console.log("refreshmentRequest received:", data, "| Connected mac clients:", macClients.size);
+        if (macClients.size === 0) {
+            console.log("=> Koi bhi Mac (bridge.js) is waqt connected/registered nahi hai, isliye notification forward nahi ho payegi.");
+        }
         macClients.forEach((client) => {
             client.emit("refreshmentRequest", data);
         });

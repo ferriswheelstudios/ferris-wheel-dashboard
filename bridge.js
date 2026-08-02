@@ -44,16 +44,24 @@ socket.on("refreshmentRequest", async (data) => {
 
     try {
 
-        await fetch("https://ntfy.sh/ferris-wheel-studios", {
+        const res = await fetch("https://ntfy.sh/ferris-wheel-studios", {
             method: "POST",
             body: `${data.type} Request\n\nFrom: ${data.artist}`
         });
 
-        console.log("Refreshment Notification Sent");
+        console.log("ntfy.sh response status:", res.status);
+        const text = await res.text();
+        console.log("ntfy.sh response body:", text);
+
+        if (res.ok) {
+            console.log("Refreshment Notification Sent");
+        } else {
+            console.log("=> ntfy.sh ne error diya, upar status/body check karein.");
+        }
 
     } catch (err) {
 
-        console.error(err);
+        console.error("Refreshment notification error:", err);
 
     }
 
