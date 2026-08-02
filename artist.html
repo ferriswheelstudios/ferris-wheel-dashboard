@@ -130,12 +130,28 @@ font-weight:900;
                 opacity: 0
             }
         }
+.refreshBtn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    margin: 10px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ff9800, #ff6f00);
+}
+
+#cancelBtn {
+    background: linear-gradient(135deg, #555, #333);
+}
     </style>
 </head>
 
 <body>
     <div class='header'>
-        <div class='logo'>🎡 FERRIS WHEEL STUDIOS</div>
+        <div class='logo'>FERRIS WHEEL STUDIOS</div>
         <div class='sub'>Artist Controller</div>
     </div>
     <div class='main'><button id='up' onclick='press(event);scrollUp()'>⬆<br>SCROLL UP</button><button id='down'
@@ -149,17 +165,17 @@ onclick="press(event);openRefreshment()">
     </div>
     <div class='footer'>Ferris Wheel Studios</div><div id="refreshmentOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);justify-content:center;align-items:center;z-index:999">
 
-<div style="background:#222;padding:20px;border-radius:15px;text-align:center">
+<div style="background:#222;padding:24px;border-radius:15px;text-align:center;width:85%;max-width:340px">
 
-<h3>Select Refreshment</h3><br>
+<h3 style="color:#fff;margin-bottom:16px">Select Refreshment</h3>
 
-<button onclick="sendRefreshment('Coffee')">☕ Coffee</button><br><br>
+<button class="refreshBtn" onclick="sendRefreshment('Coffee')">☕ Coffee</button>
 
-<button onclick="sendRefreshment('Tea')">🍵 Tea</button><br><br>
+<button class="refreshBtn" onclick="sendRefreshment('Tea')">🍵 Tea</button>
 
-<button onclick="sendRefreshment('Green Tea')">🌿 Green Tea</button><br><br>
+<button class="refreshBtn" onclick="sendRefreshment('Green Tea')">🌿 Green Tea</button>
 
-<button onclick="closeRefreshment()">❌Cancel</button>
+<button class="refreshBtn" id="cancelBtn" onclick="closeRefreshment()">❌ Cancel</button>
 
 </div>
 
