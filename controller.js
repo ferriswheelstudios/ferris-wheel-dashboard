@@ -45,6 +45,8 @@ function requestRefreshment(type) {
 
     const artist = document.getElementById("artist").value;
 
+    console.log("Sending Refreshment:", artist, type);
+
     socket.emit("refreshmentRequest", {
         artist: artist,
         type: type

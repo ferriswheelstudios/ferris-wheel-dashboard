@@ -7,6 +7,8 @@ const socket = io("https://ferris-wheel-dashboard.onrender.com");
 socket.on("connect", () => {
     console.log("Connected to Render");
     socket.emit("registerMac");
+});socket.onAny((event, ...args) => {
+    console.log("EVENT:", event, args);
 });
 
 socket.on("showSessionView", () => {
@@ -38,7 +40,7 @@ socket.on("showDashboard", () => {
 // Refreshment Notification
 socket.on("refreshmentRequest", async (data) => {
 
-    console.log
+    console.log("Refreshment received:", data);
 
     try {
 
@@ -51,7 +53,7 @@ socket.on("refreshmentRequest", async (data) => {
 
     } catch (err) {
 
-        console.log(err);
+        console.error(err);
 
     }
 

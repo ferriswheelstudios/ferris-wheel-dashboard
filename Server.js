@@ -1,5 +1,6 @@
 const express = require("express");
 const http = require("http");
+const https = require("https");
 const { Server } = require("socket.io");
 
 const app = express();
@@ -44,6 +45,39 @@ io.on("connection", (socket) => {
 
         io.emit("dashboardData", dashboardData);
 
+        // Google Sheet Save
+        const postData = JSON.stringify({
+            date: new Date().toLocaleDateString("en-IN"),
+            artist: data.artist || "",
+            song: data.song || "",
+            engineer: data.engineer || "",
+            time: data.sessionTime || ""
+        });
+
+        const req = https.request(
+            "https://script.google.com/macros/s/AKfycbwkxhFfi_ehSeQp2rNZutj7KD5Hqna7nZaB7-Mj7XDAX6wzq-L7u-ivk0uKr8FbnGs0/exec",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Content-Length": Buffer.byteLength(postData)
+                }
+            },
+            (res) => {
+                res.on("data", () => {});
+                res.on("end", () => {
+                    console.log("Google Sheet Updated");
+                });
+            }
+        );
+
+        req.on("error", (err) => {
+            console.error("Google Sheet Error:", err.message);
+        });
+
+        req.write(postData);
+        req.end();
+
     });
 
     socket.on("lyricsScroll", (amount) => {
@@ -62,7 +96,6 @@ io.on("connection", (socket) => {
         });
     });
 
-    // NEW
     socket.on("refreshmentRequest", (data) => {
         macClients.forEach((client) => {
             client.emit("refreshmentRequest", data);
